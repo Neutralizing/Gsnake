@@ -33,13 +33,14 @@ Snake.prototype.gameOver=function(){
 
 Snake.prototype.goAndEat=function(){
 	var This=this;
+	console.log(this.snakeTrian);
 	this.head[0]=this.snakeTrian[0][0]+this.vc[0];
 	this.head[1]=this.snakeTrian[0][1]+this.vc[1];
 	// console.log(this.head);
 
-	// if(this.head[0]<0||this.head[0]>this.tr||this.head[1]<0||this.head[1]>this.td||(this.indexOfDualArray(This.snakeTrian,This.head))){
-	// 	This.gameOver();
-	// }
+	if(this.head[0]<0||this.head[0]>this.tr||this.head[1]<0||this.head[1]>this.td||(this.indexOfDualArray(This.snakeTrian,This.head))){
+		This.gameOver();
+	}
 	if(this.head[0]==this.food[0]&&this.head[1]==this.food[1]){
 		this.snakeTrian.unshift(this.head);
 		this.createFood();
@@ -50,7 +51,8 @@ Snake.prototype.goAndEat=function(){
 		}
 		this.snakeTrian[0]=this.head;
 	}
-	// console.log(this.snakeTrian);
+	console.log(this.snakeTrian);
+	this.createSnake();
 	return this.snakeTrian;
 	
 	
@@ -102,7 +104,7 @@ Snake.prototype.createSnake=function(){
 	for(var i=0;i<this.snakeTrian.length;i++){
 		this.tds[this.snakeTrian[i][1]][this.snakeTrian[i][0]].className='snake';
 	}
-	console.log(this.snakeTrian);
+	console.log('渲染');
 }
 
 
@@ -131,7 +133,7 @@ Snake.prototype.init=function(){
 
 // var level=[[40,40,2],[40,40,4],[45,45,6]];
 
-// var timer=null;
+var timer=null;
 // var btn=document.getElementsByTagName('button');
 // var levelSelect=[];
 // for(let i=0;i<btn.length-1;i++){
@@ -152,12 +154,7 @@ var snake=new Snake(40,40,2);
 snake.init();
 // console.log(snake.snakeTrian);
 // setTimeout("console.log(1)",1000);
-snake.goAndEat();
-setTimeout(snake.createSnake(),1000);
-console.log(1);
-setTimeout(snake.goAndEat(),2000);
-console.log(2);
-setTimeout(snake.createSnake(),3000);
-console.log(3);
 
-// timer=setInterval(snake.goAndEat,1000);
+
+
+timer=setInterval(snake.goAndEat,1000);
