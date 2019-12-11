@@ -1,0 +1,28 @@
+<DOCTYPE html>
+<html>
+	<head>
+		
+	</head>
+	<body>
+		<script>
+			var a=[[1,2],[3,4],[5,6]];
+			var b=[3,4];
+			var indexOfDArray=function(array1,array2){
+				for(var i=0;i<array1.length;i++){
+					if(array1[i][0]==array2[0]&&array1[i][1]==array2[1]){
+						return true;
+					}
+
+				}
+				return false;
+			}
+			console.log(indexOfDArray(a,b));
+			for(var j=a.length-1;j>0;j--){
+				a[j]=a[j-1];
+			}
+			a[0]=b;
+			console.log(a);
+
+		</script>
+	</body>
+</html>
