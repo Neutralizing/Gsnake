@@ -22,9 +22,9 @@ Snake.prototype.indexOfDualArray=function(array,item){
 }
 
 Snake.prototype.gameOver=function(){
-	
-	alert('Oh.Wo.....gameOver!!');
 	clearInterval(timer);
+	alert('Oh.Wo.....gameOver!!','',location.reload());
+	
 }
 
 
@@ -36,7 +36,7 @@ Snake.prototype.goAndEat=function(train){
 	head[1]=train[0][1]+vc[1];
 	
 
-	if(head[0]<0||head[0]>this.tr||head[1]<0||head[1]>this.td||(this.indexOfDualArray(train,head))){
+	if(head[0]<0||head[0]>this.tr||head[1]<0||head[1]>this.td||(this.indexOfDualArray(train,head))||(this.indexOfDualArray(brick,head))){
 		This.gameOver();
 
 	}else if(head[0]==food[0]&&head[1]==food[1]){
@@ -90,6 +90,18 @@ Snake.prototype.velocity=function(event){
 	
 }
 
+Snake.prototype.createBrick=function(){
+
+	for(var i=0;i<level*5;i++){
+		var x=parseInt(this.td*Math.random());
+		var y=parseInt(this.td*Math.random());
+		brick[i]=[x,y];
+		this.tds[y][x].className='brick';
+	}
+	
+}
+
+
 Snake.prototype.createDom=function(){
 	var table=document.createElement('table');
 
@@ -125,6 +137,10 @@ Snake.prototype.createFood=function(){
 
 		This.createFood();
 	}
+	if(this.indexOfDualArray(brick,food)){
+
+		This.createFood();
+	}
 	
 	this.tds[y][x].className='food';
 	return food;
@@ -133,7 +149,9 @@ Snake.prototype.createFood=function(){
 
 Snake.prototype.init=function(){
 	this.createDom();
+	this.createBrick();
 	this.createFood();
+	
 	snakeTrian[0]=[20,20];
 	vc=[1,0];
 
@@ -145,6 +163,8 @@ var levelClass=[1,2,4];
 var level=1;
 var ln=0;
 var vc=[1,0];
+var brick=new Array();
+brick[0]=new Array();
 var snakeTrian=new Array();
 snakeTrian[0]=new Array();
 var timer=null;
@@ -156,7 +176,7 @@ for(let i=0;i<btn.length-1;i++){
 		level=levelClass[i];
 		ln=i;
 		clearInterval(timer);
-		timer=setInterval("snake.goAndEat(snakeTrian)",400/level);
+		timer=setInterval("snake.goAndEat(snakeTrian)",300/level);
 	
 	}	
 }
@@ -164,12 +184,12 @@ btn[3]=onclick=function(){
 	clearInterval(timer);
 
 	snake.init();
-	timer=setInterval("snake.goAndEat(snakeTrian)",400/level);
+	timer=setInterval("snake.goAndEat(snakeTrian)",300/level);
 }
 var snake=new Snake(40,40);
 snake.init();
 window.addEventListener("keydown",snake.velocity);
-timer=setInterval("snake.goAndEat(snakeTrian)",400);
+timer=setInterval("snake.goAndEat(snakeTrian)",300);
 
 
 
