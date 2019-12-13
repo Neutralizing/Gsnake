@@ -36,8 +36,9 @@ Snake.prototype.goAndEat=function(train){
 	head[1]=train[0][1]+vc[1];
 	
 
-	if(head[0]<0||head[0]>this.tr||head[1]<0||head[1]>this.td||(this.indexOfDualArray(train,head))||(this.indexOfDualArray(brick,head))){
+	if(head[0]<0||head[0]>=this.tr||head[1]<0||head[1]>=this.td||(this.indexOfDualArray(train,head))||(this.indexOfDualArray(brick,head))){
 		This.gameOver();
+		return false;
 
 	}else if(head[0]==food[0]&&head[1]==food[1]){
 		train.unshift(head);
