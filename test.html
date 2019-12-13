@@ -6,21 +6,9 @@
 	<body>
 		<script>
 			
-			var timer;
-			timer=setInterval(doing,1000);
-			var doing=function(){
-				var a=[[1,2],[3,4],[5,6]];
-				var x=parseInt(Math.random()*10);
-				var y=parseInt(Math.random()*10);
-				var b=[x,y];
-				for(var i=a.length-1;i>0;i--){
-					a[i]=a[i-1];
-				}
-				a[0]=b;
-				console.log(a);
-			}
-			// timer();
-
+			var timer=null;
+			level=5;
+			time=setInterval('console.log(1)',1000/level);
 			
 
 		</script>

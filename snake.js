@@ -1,17 +1,13 @@
-Snake=function(tr,td,level){
+Snake=function(tr,td){
 	this.tr=tr;
 	this.td=td;
 	this.level=level;
 
 	this.tds=[];//行与列的DOM对象
 	this.gameTable=document.getElementById('gameTable');
-	this.vc=[1,0];//初始速度向左
-	this.food=[]; //坐标形式存储
-    this.snakeTrian=new Array(); //用2维数坐标形式组存储蛇
-    this.snakeTrian[0]=new Array();
-    this.snakeTrian[1]=new Array();
-    this.snakeTrian=[[20,20]];
-    this.head=[];
+	
+    
+    
 
 }
 
@@ -26,61 +22,71 @@ Snake.prototype.indexOfDualArray=function(array,item){
 }
 
 Snake.prototype.gameOver=function(){
-	// clearInterval(letsgo);
-	console.log('Woooo,you eat too much!!!');
+	
+	alert('Oh.Wo.....gameOver!!');
+	clearInterval(timer);
 }
 
 
-Snake.prototype.goAndEat=function(){
+Snake.prototype.goAndEat=function(train){
 	var This=this;
-	console.log(this.snakeTrian);
-	this.head[0]=this.snakeTrian[0][0]+this.vc[0];
-	this.head[1]=this.snakeTrian[0][1]+this.vc[1];
-	// console.log(this.head);
+	var head=[];
+	
+	head[0]=train[0][0]+vc[0];
+	head[1]=train[0][1]+vc[1];
+	
 
-	if(this.head[0]<0||this.head[0]>this.tr||this.head[1]<0||this.head[1]>this.td||(this.indexOfDualArray(This.snakeTrian,This.head))){
+	if(head[0]<0||head[0]>this.tr||head[1]<0||head[1]>this.td||(this.indexOfDualArray(train,head))){
 		This.gameOver();
-	}
-	if(this.head[0]==this.food[0]&&this.head[1]==this.food[1]){
-		this.snakeTrian.unshift(this.head);
+
+	}else if(head[0]==food[0]&&head[1]==food[1]){
+		train.unshift(head);
 		this.createFood();
 
 	}else{
-		for(var i=this.snakeTrian.length-1;i>0;i--){
-			this.snakeTrian[i]=this.snakeTrian[i-1];
+		if(train.length==1){
+			// console.log("step one");
+			This.tds[train[0][1]][train[0][0]].className="";
+			train[0]=head;
 		}
-		this.snakeTrian[0]=this.head;
+		for(var i=train.length-1;i>0;i--){
+			// console.log("step two");
+			This.tds[train[i][1]][train[i][0]].className="";
+			train[i]=train[i-1];
+		}
+		train[0]=head;
 	}
-	console.log(this.snakeTrian);
-	this.createSnake();
-	return this.snakeTrian;
+	
+	snakeTrian=train;
+	this.createSnake(train);
+	return snakeTrian;
 	
 	
 }
 
 Snake.prototype.velocity=function(event){
 	// var a=0;
-	if(this.vc[0]==0){
+	if(vc[0]==0){
 		//
 		if(event.keyCode==37){
-			this.vc.reverse();
+			vc.reverse();
 		}
 		if(event.keyCode==39){
-			this.vc.reverse();
-			this.vc[0]=-this.vc[0];
+			vc.reverse();
+			vc[0]=-vc[0];
 
 		}
 	}else{
 		if(event.keyCode==37){
-			this.vc.reverse();
-			this.vc[1]=-this.vc[1];
+			vc.reverse();
+			vc[1]=-vc[1];
 
 		}
 		if(event.keyCode==39){
-			this.vc.reverse();
+			vc.reverse();
 		}
 	}
-	return this.vc;
+	return vc;
 	
 }
 
@@ -97,14 +103,15 @@ Snake.prototype.createDom=function(){
 		}
 		table.appendChild(domTr);
 	}
+	this.gameTable.innerHTML="";
 	this.gameTable.appendChild(table);
 }
 
-Snake.prototype.createSnake=function(){
-	for(var i=0;i<this.snakeTrian.length;i++){
-		this.tds[this.snakeTrian[i][1]][this.snakeTrian[i][0]].className='snake';
+Snake.prototype.createSnake=function(train){
+	for(var i=0;i<train.length;i++){
+		this.tds[train[i][1]][train[i][0]].className='snake';
 	}
-	console.log('渲染');
+	// console.log('渲染');
 }
 
 
@@ -113,48 +120,60 @@ Snake.prototype.createFood=function(){
 	var This=this;
 	var x=parseInt(this.td*Math.random());
 	var y=parseInt(this.tr*Math.random());
-	this.food=[x,y];
-	if(this.indexOfDualArray(This.snakeTrian,This.food)){
+	food=[x,y];
+	if(this.indexOfDualArray(snakeTrian,food)){
 
 		This.createFood();
 	}
-	// console.log(this.snakeTrian);
-	// console.log(this.food);
+	
 	this.tds[y][x].className='food';
-	return this.food;
-	//console.log(this.tds[y][x]);
+	return food;
+	
 }
 
 Snake.prototype.init=function(){
 	this.createDom();
 	this.createFood();
-	this.createSnake();
+	snakeTrian[0]=[20,20];
+	vc=[1,0];
+
 }
 
-// var level=[[40,40,2],[40,40,4],[45,45,6]];
 
+var btn=document.getElementsByTagName('button');
+var levelClass=[1,2,4];
+var level=1;
+var ln=0;
+var vc=[1,0];
+var snakeTrian=new Array();
+snakeTrian[0]=new Array();
 var timer=null;
-// var btn=document.getElementsByTagName('button');
-// var levelSelect=[];
-// for(let i=0;i<btn.length-1;i++){
-// 	btn[i].onclick=function(){
-// 		for(var j=0;j<btn.length-1;j++){
-// 			btn[j].className='';
-// 		}
-// 		btn[i].className='active';
-// 		levelSelect=level.slice(i,i+1);
-// 	}	// console.log(levelSelect);
-// }
+var food=[];
+for(let i=0;i<btn.length-1;i++){
+	btn[i].onclick=function(){
+		btn[ln].className="";
+		this.className="active";
+		level=levelClass[i];
+		ln=i;
+		clearInterval(timer);
+		timer=setInterval("snake.goAndEat(snakeTrian)",400/level);
+	
+	}	
+}
+btn[3]=onclick=function(){
+	clearInterval(timer);
 
-// btn[2].onclick();
-// var snake=new Snake(levelSelect[0][0],levelSelect[0][1],levelSelect[0][2]);
-var snake=new Snake(40,40,2);
-
-// console.log(snake.snakeTrian);
+	snake.init();
+	timer=setInterval("snake.goAndEat(snakeTrian)",400/level);
+}
+var snake=new Snake(40,40);
 snake.init();
-// console.log(snake.snakeTrian);
-// setTimeout("console.log(1)",1000);
+window.addEventListener("keydown",snake.velocity);
+timer=setInterval("snake.goAndEat(snakeTrian)",400);
 
 
 
-timer=setInterval(snake.goAndEat,1000);
+
+
+
+
