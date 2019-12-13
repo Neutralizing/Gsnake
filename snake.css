@@ -58,6 +58,21 @@ table{
 .snake{
 	background: #cb99c5;
 }
+.tip{
+
+	margin: 0 auto;
+	margin-top: 30px;
+	width: 480px;
+
+}
+
+p{
+	margin: 0 auto;
+	text-align: center;
+	background: #7fccde;
+
+
+}
 
 
 
